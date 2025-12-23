@@ -27,9 +27,9 @@
 |   9   | База данных системы АБС перегружена, поэтому ужно избежать прямой работы интернет-банка с API АБС в новом процессе    |
 ### <a name="_qmphm5d6rvi3"></a>**Решение**
 
-[Диаграмма контекста]()
+[Диаграмма контекста](https://github.com/reverdp/architecture-pro-standart/blob/tasks/Task5/schemas/context/Context-Bank_Standart_Credit_Context_Diagram.png)
 
-[Диаграмма контейнеров]()
+[Диаграмма контейнеров](https://github.com/reverdp/architecture-pro-standart/blob/tasks/Task5/schemas/container/Container-Bank_Standart_Credit_Container_Diagram.png)
 
 ### <a name="_bjrr7veeh80c"></a>**Альтернативы**
 Как альтернатива можно вынести приём заявок в новый сервис со своей БД, который будет являться транспортом для заявок. 

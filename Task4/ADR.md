@@ -20,9 +20,9 @@
 |   4   |Передача файлов должно быть по защищенному протоколу|
 ### <a name="_qmphm5d6rvi3"></a>**Решение**
 
-[Диаграмма контекста]()
+[Диаграмма контекста](https://github.com/reverdp/architecture-pro-standart/blob/tasks/Task4/schemas/context/Context-Bank_Standart_Call_Center_Context_Diagram.png)
 
-[Диаграмма контейнеров]()
+[Диаграмма контейнеров](https://github.com/reverdp/architecture-pro-standart/blob/tasks/Task4/schemas/container/Container-Bank_Standart_Call_Center_Container_Diagram.png)
 
 ### <a name="_bjrr7veeh80c"></a>**Альтернативы**
 Как альтернатива для партнерского кол-центра можно отпрвлять файлы на почту, вместо SFTP сервера
