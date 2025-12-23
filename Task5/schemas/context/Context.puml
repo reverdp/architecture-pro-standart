@@ -1,0 +1,32 @@
+@startuml
+title Bank Standart Credit Context Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(User, "Клиент", "Посетитель сайта/пользователь интернет-банка")
+Person(BackOfficeDepositManager, "Сотрудник бэк офиса (кредиты)", "бэк офис")
+
+System_Ext(CreditHistory, "Бюро кредитных историй", "Источник данных кредитной истории")
+
+Container_Boundary(BankStandart, "Bank Standart") {
+  Container(InternetBank, "Интернет-банк", "")
+  Container(Site, "Сайт", "")
+  Container(CreditSystem, "Кредитный конвейер", "")
+}
+
+System_Ext(TelecomOperator, "Телеком-оператор", "Оператор по отправке СМС")
+
+Rel(User, InternetBank, "Заявка на кредит")
+Rel(User, Site, "Заявка на кредит")
+
+Rel(InternetBank,CreditSystem,"Передача заявки на кредит")
+Rel(Site,CreditSystem,"Передача заявки на кредит")
+
+Rel(CreditSystem,TelecomOperator,"Отправка sms сообщений")
+Rel(CreditSystem,CreditHistory,"Запрос кредитной истории клиента")
+
+Rel(BackOfficeDepositManager,CreditSystem,"Обработка заявок от клиентов")
+
+@enduml

@@ -1,0 +1,24 @@
+@startuml
+title Bank Standart Call Center Context Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(BackOfficeDepositManager, "Сотрудник бэк офиса (депозиты)", "бэк офис")
+Person(CallCenterOperator, "Оператор кол-центра", "Кол-центр")
+Person(PartnerCallCenterOperator, "Оператор партнерского кол-центра", "Партнерский кол-центр")
+
+System_Ext(PartnerCallCenter, "Партнерский кол-центр", "Контакт с клиентами")
+
+System(BankStandart, "Bank Standart", "")
+
+Rel(CallCenterOperator,BankStandart,"Обработка обращений клиентов")
+
+Rel(PartnerCallCenterOperator,PartnerCallCenter,"Обработка обращений клиентов")
+Rel(BackOfficeDepositManager,BankStandart,"Управление ставками")
+
+Rel(PartnerCallCenter,BankStandart,"Чтение файлов", "SFTP")
+
+
+@enduml

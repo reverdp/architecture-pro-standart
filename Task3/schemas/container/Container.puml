@@ -1,0 +1,46 @@
+@startuml
+title Bank Standart Deposit Container Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(User, "Клиент", "Пользователь интернет-банка")
+Person(BackOfficeDepositManager, "Сотрудник бэк офиса (депозиты)", "бэк офис")
+
+System_Ext(TelecomOperator, "Телеком-оператор", "Оператор по отправке СМС")
+
+Container_Boundary(BankStandart, "Bank Standart") {
+  Container(ABSDesktopApp, "АБС приложение", "Delphi", "Рабочее место для работы с АБС")
+  ContainerDb(ABSDB, "Database", "Oracle", "База данных АБС")
+
+  ContainerQueue(EventBus, "EventBus", "Kafka", "Брокер сообщений")
+
+  Container(InternetBankWeb, "Веб-приложение Интернет-банк", "ASP.NET", "")
+  ContainerDb(InternetBankDB, "Database", "MS SQL", "База данных")
+
+  Container(RateRegistry, "Реестр ставок", "ASP.NET", "")
+  ContainerDb(RateRegistryDB, "Database", "PostgreSQL", "База данных")
+
+  Container(SmsGateway, "СМС-шлюз телеком-оператора", "", "Отправка sms сообщений")
+}
+
+Rel(User, InternetBankWeb, "Заявка на депозит")
+Rel(BackOfficeDepositManager,ABSDesktopApp,"Обработка заявок от клиентов")
+Rel(BackOfficeDepositManager,RateRegistry,"Управление ставками")
+
+Rel(SmsGateway,TelecomOperator,"Отправка sms сообщений")
+
+Rel(ABSDB,EventBus,"Прием заявки на депозит")
+Rel(InternetBankWeb,InternetBankDB,"")
+Rel(RateRegistry,RateRegistryDB,"")
+
+Rel(ABSDesktopApp,ABSDB,"")
+Rel(ABSDesktopApp,EventBus,"SMS уведомление об открытии депозита")
+Rel(InternetBankWeb,EventBus,"Подтверждение заявки через SMS")
+Rel(SmsGateway,EventBus,"Чтение sms сообщений")
+
+Rel(InternetBankWeb,EventBus,"Создана заявка на депозит")
+
+
+@enduml

@@ -1,0 +1,34 @@
+@startuml
+title Bank Standart Deposit Context Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(User, "Клиент", "Посетитель сайта/пользователь интернет-банка")
+Person(CallCenterOperator, "Оператор кол-центра", "Кол-центр банка Standart")
+Person(BackOfficeDepositManager, "Сотрудник бэк офиса (депозиты)", "бэк офис")
+
+System_Ext(TelecomOperator, "Телеком-оператор", "Оператор по отправке СМС")
+
+Container_Boundary(BankStandart, "Bank Standart") {
+  Container(InternetBank, "Интернет-банк", "")
+  Container(Site, "Сайт", "")
+  Container(ABS, "АБС", "")
+  Container(CallCenterSystem, "Система кол-центра", "")
+}
+
+Rel(User, InternetBank, "Заявка на депозит")
+Rel(User, Site, "Заявка на депозит")
+
+Rel(InternetBank,ABS,"Передача заявки на депозит")
+Rel(Site,ABS,"Передача заявки на депозит")
+
+Rel(CallCenterOperator,CallCenterSystem,"Обработка обращений клиентов")
+Rel(CallCenterSystem,ABS,"Передача обращений клиентов")
+
+Rel(ABS,TelecomOperator,"Отправка sms сообщений")
+
+Rel(BackOfficeDepositManager,ABS,"Обработка заявок от клиентов")
+
+@enduml
