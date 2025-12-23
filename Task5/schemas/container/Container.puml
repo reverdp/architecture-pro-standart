@@ -1,0 +1,51 @@
+@startuml
+title Bank Standart Credit Container Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(User, "Клиент", "Пользователь интернет-банка")
+Person(BackOfficeDepositManager, "Сотрудник бэк офиса (кредиты)", "бэк офис")
+
+System_Ext(TelecomOperator, "Телеком-оператор", "Оператор по отправке СМС")
+System_Ext(CreditHistory, "Бюро кредитных историй", "Источник данных кредитной истории")
+
+Container_Boundary(BankStandart, "Bank Standart") {
+  Container(CreditSystem, "Кредитный конвейер", "Camunda", "Процесс обработки заявок на кредит")
+  ContainerDb(CreditSystemDB, "Database", "Oracle", "База данных")
+
+  Container(CreditScoring, "Система кредитного скоринга", "Python", "Расчет рейтинга клиента")
+  ContainerDb(CreditScoringDB, "Database", "PostgreSQL", "База данных")
+
+  ContainerQueue(EventBus, "EventBus", "Kafka", "Брокер сообщений")
+
+  Container(InternetBankWeb, "Веб-приложение Интернет-банк", "ASP.NET", "")
+  ContainerDb(InternetBankDB, "Database", "MS SQL", "База данных")
+
+  Container(SmsGateway, "СМС-шлюз телеком-оператора", "", "Отправка sms сообщений")
+
+  ContainerDb(ABSDB, "Database", "Oracle", "База данных АБС")
+}
+
+Rel(User, InternetBankWeb, "Заявка на кредит")
+Rel(BackOfficeDepositManager,CreditSystem,"Обработка заявок от клиентов")
+
+Rel(SmsGateway,TelecomOperator,"Отправка sms сообщений")
+
+Rel(CreditSystem,EventBus,"Прием заявки на кредит")
+Rel(InternetBankWeb,InternetBankDB,"")
+
+Rel(CreditSystem,CreditSystemDB,"")
+Rel(CreditScoring,CreditScoringDB,"")
+Rel(CreditSystem,CreditScoring,"Запрос рейтинга клиента")
+Rel(CreditScoring,CreditHistory,"Запрос кредитной истории клиента")
+Rel(CreditScoring,ABSDB,"Запрос кредитной истории клиента")
+Rel(CreditSystem,EventBus,"SMS уведомление об изменени статуса заявки")
+Rel(InternetBankWeb,EventBus,"Подтверждение заявки через SMS")
+Rel(SmsGateway,EventBus,"Чтение sms сообщений")
+
+Rel(InternetBankWeb,EventBus,"Создана заявка на кредит")
+
+
+@enduml

@@ -1,0 +1,38 @@
+@startuml
+title Bank Standart Call Center Container Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(BackOfficeDepositManager, "Сотрудник бэк офиса (депозиты)", "бэк офис")
+Person(CallCenterOperator, "Оператор кол-центра", "Кол-центр")
+Person(PartnerCallCenterOperator, "Оператор партнерского кол-центра", "Партнерский кол-центр")
+
+System_Ext(PartnerCallCenter, "Партнерский кол-центр", "Контакт с клиентами")
+
+Container_Boundary(BankStandart, "Bank Standart") {
+  Container(RateRegistry, "Реестр ставок", "ASP.NET", "")
+  ContainerDb(RateRegistryDB, "Database", "PostgreSQL", "База данных")
+
+  Container(FileStorage, "SFTP сервер", "", "")
+
+  Container(CallCenterFront, "Веб-интерфейс Кол-центра", "React.js", "")
+  Container(CallCenterBackend, "Бэкенд Кол-центра", "Java Spring Boot", "")
+  ContainerDb(CallCenterDB, "Database", "PostgreSQL", "База данных")
+}
+
+Rel(RateRegistry,RateRegistryDB,"")
+
+Rel(CallCenterOperator,CallCenterFront,"Обработка обращений клиентов")
+Rel(CallCenterFront,CallCenterBackend,"Вызов API")
+Rel(CallCenterBackend,CallCenterDB,"")
+Rel(CallCenterBackend,RateRegistry,"Запрос ставок", "")
+
+Rel(PartnerCallCenterOperator,PartnerCallCenter,"Обработка обращений клиентов")
+Rel(BackOfficeDepositManager,RateRegistry,"Управление ставками")
+
+Rel(RateRegistry,FileStorage,"Загрузка файлов", "SFTP")
+Rel(PartnerCallCenter,FileStorage,"Чтение файлов", "SFTP")
+
+@enduml
